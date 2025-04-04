@@ -1,6 +1,6 @@
-abdel-hadi-kandeel
+abdel hadi kandeel
 alfonsin
-alhaji-abdul-ahmed
+alhaji abdul ahmed
 alptemocin
 amato
 andersen
@@ -20,18 +20,18 @@ bond
 botha
 bouey
 braks
-bresser-pereira
+bresser pereira
 brodersohn
 brundtland
 camdessus
 carlsson
 caro
-castelo-branco
+castelo branco
 castro
-cavaco-silva
+cavaco silva
 chaves
-chen-muhua
-chiang-ching-kuo
+chen muhua
+chiang ching kuo
 chien
 chirac
 ciampi
@@ -43,21 +43,21 @@ cossiga
 crow
 dadzie
 dauster
-de-clercq
-de-kock
-de-korte
-de-la-madrid
-de-larosiere
-del-mazo
+de clercq
+de kock
+de korte
+de la madrid
+de larosiere
+del mazo
 delamuraz
 delors
 dementsev
-deng-xiaoping
+deng xiaoping
 dennis
 dhillon
 dominguez
 douglas
-du-plessis
+du plessis
 duisenberg
 dunkel
 edelman
@@ -86,25 +86,25 @@ gromyko
 grosz
 guillaume
 halikias
-hamad-saud-al-sayyari
+hamad saud al sayyari
 hannibalsson
 haughey
 hawke
-he-kang
+he kang
 herrington
 hillery
-hisham-nazer
+hisham nazer
 hoefner
 hoffmeyer
 holberg
 holkeri
 honecker
 hovmand
-howard-baker
+howard baker
 husak
 icahn
-james-baker
-james-miller
+james baker
+james miller
 jaruzelski
 jayme
 johnston
@@ -114,7 +114,7 @@ keating
 khameini
 khomeini
 kiechle
-king-fahd
+king fahd
 kohl
 koivisto
 kondo
@@ -124,13 +124,13 @@ lacina
 lange
 languetin
 lawson
-lee-ta-hai
-lee-teng-hui
+lee ta hai
+lee teng hui
 leenanon
-leigh-pemberton
+leigh pemberton
 leitz
-li-peng
-li-xiannian
+li peng
+li xiannian
 liikanen
 lubbers
 lukman
@@ -138,7 +138,7 @@ lyng
 machinea
 macsharry
 malhotra
-mancera-aguayo
+mancera aguayo
 martens
 martin
 masse
@@ -150,13 +150,13 @@ mikulic
 milliet
 mitterrand
 miyazawa
-mohammad-ibrahim-jaffrey-baluch
-mohammad-khan-junejo
-mohammad-yasin-khan-wattoo
-mohammed-ahmed-al-razaz
-mohammed-ali-abal-khail
-mohammed-salaheddin-hamid
-morales-bermudez
+mohammad ibrahim jaffrey baluch
+mohammad khan junejo
+mohammad yasin khan wattoo
+mohammed ahmed al razaz
+mohammed ali abal khail
+mohammed salaheddin hamid
+morales bermudez
 mousavi
 moyle
 mubarak
@@ -168,8 +168,8 @@ nakasone
 nasko
 nemeth
 nobrega
-o-cofaigh
-o-kennedy
+o cofaigh
+o kennedy
 oeien
 okongwu
 ongpin
@@ -180,7 +180,7 @@ pandolfi
 papandreou
 parkinson
 paye
-perez-de-cuellar
+perez de cuellar
 petricioli
 pickens
 poehl
@@ -191,7 +191,7 @@ rafnar
 rafsanjani
 reagan
 rezende
-riberio-cadilhe
+riberio cadilhe
 rich
 rikanovic
 rojas
@@ -233,7 +233,7 @@ sumita
 suominen
 takeshita
 tamura
-tavares-moreia
+tavares moreia
 thatcher
 timar
 tinsulanonda
@@ -243,25 +243,25 @@ toman
 tsovolas
 vancsa
 venkataraman
-vera-la-rosa
+vera la rosa
 verity
 villanyi
 vlatkovic
 volcker
-von-weizsaecker
+von weizsaecker
 vranitzky
 waldheim
 wali
 walsh
-wang-bingqian
+wang bingqian
 wardhana
-wasim-aun-jaffrey
+wasim aun jaffrey
 wilson
 wise
 yeutter
 young
-yu-kuo-hua
+yu kuo hua
 zak
-zhao-ziyang
-zheng-tuobin
-zia-ul-haq
+zhao ziyang
+zheng tuobin
+zia ul haq

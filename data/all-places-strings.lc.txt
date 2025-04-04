@@ -1,7 +1,7 @@
 afghanistan
 albania 
 algeria 
-american-samoa
+american samoa
 andorra 
 angola  
 anguilla
@@ -22,40 +22,40 @@ bhutan
 bolivia 
 botswana
 brazil  
-british-virgin-islands
+british virgin islands
 brunei  
 bulgaria
-burkina-faso
+burkina faso
 burma
 burundi 
 cameroon
 canada  
-cape-verde 
-cayman-islands
-central-african-republic
+cape verde
+cayman islands
+central african republic
 chad 
 chile
 china
 colombia
 congo
-costa-rica 
+costa rica
 cuba 
 cyprus  
 czechoslovakia
 denmark
 djibouti
 dominica
-dominican-republic
-east-germany
+dominican republic
+east germany
 ecuador 
 egypt
-el-salvador
-equatorial-guinea
+el salvador
+equatorial guinea
 ethiopia
 fiji 
 finland 
 france  
-french-guiana
+french guiana
 gabon
 gambia  
 ghana
@@ -66,11 +66,11 @@ guadeloupe
 guam 
 guatemala  
 guinea  
-guinea-bissau
+guinea bissau
 guyana  
 haiti
 honduras
-hong-kong  
+hong kong
 hungary 
 iceland 
 india
@@ -80,7 +80,7 @@ iraq
 ireland 
 israel  
 italy
-ivory-coast
+ivory coast
 jamaica 
 japan
 jordan  
@@ -110,18 +110,18 @@ mozambique
 namibia 
 nepal
 netherlands
-netherlands-antilles
-new-caledonia
-new-zealand
+netherlands antilles
+new caledonia
+new zealand
 nicaragua  
 niger
 nigeria 
-north-korea
+north korea
 norway  
 oman 
 pakistan
 panama  
-papua-new-guinea
+papua new guinea
 paraguay
 peru 
 philippines
@@ -130,16 +130,16 @@ portugal
 qatar
 romania 
 rwanda  
-saudi-arabia
+saudi arabia
 senegal 
 seychelles 
-sierra-leone
+sierra leone
 singapore  
 somalia 
-south-africa
-south-korea
+south africa
+south korea
 spain
-sri-lanka  
+sri lanka
 sudan
 suriname
 swaziland  
@@ -151,24 +151,28 @@ tanzania
 thailand
 togo 
 tonga
-trinidad-tobago
+trinidad tobago
 tunisia 
 turkey  
 uae  
 uganda  
 uk
+u.k.
+u. k.
 uruguay 
-us-virgin-islands
+us virgin islands
 usa
+u.s.
+u. s.
 ussr
 vanuatu 
 vatican 
 venezuela  
 vietnam 
-west-germany
-western-samoa
-yemen-arab-republic
-yemen-demo-republic
+west germany
+western samoa
+yemen arab republic
+yemen demo republic
 yugoslavia 
 zaire
 zambia  
