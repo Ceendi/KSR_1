@@ -8,11 +8,8 @@ public class Main {
 
         for (Article article : articles) {
             Features features = FeatureExtractor.extractFeatures(article);
-
-            System.out.println("--------------------------------------------");
-            System.out.println("Text: " + article.getText());
-            System.out.println("Label: " + article.getLabel());
-            System.out.println(features);
+            article.setFeatures(features);
+            System.out.println(article);
         }
     }
 }

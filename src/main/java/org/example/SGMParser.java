@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SGMParser {
+    public final static List<String> classifiedCountries = new LinkedList<>(List.of("west-germany", "usa", "france", "uk", "canada", "japan"));
     public static List<Article> convert(String fileName) {
         Path filePath = Path.of(fileName);
         ArrayList<Article> articles = new ArrayList<>();
@@ -44,7 +45,7 @@ public class SGMParser {
                     }
                 }
 
-                if (placesArray.size() == 1 && !bodyText.isEmpty()) {
+                if (placesArray.size() == 1 && !bodyText.isEmpty() && classifiedCountries.contains(placesArray.getFirst())) {
                     articles.add(new Article(bodyText, placesArray.getFirst()));
                 }
             }
