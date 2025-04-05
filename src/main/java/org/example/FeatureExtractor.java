@@ -95,7 +95,7 @@ public class FeatureExtractor {
         CoreDocument document = new CoreDocument(article.getText());
         pipeline.annotate(document);
 
-        Integer totalLetters = countTotalLetters(document);
+        Double totalLetters = countTotalLetters(document);
         Double avgWordLength = calculateAverageWordLength(document);
         Double avgSentenceLength = calculateAverageSentenceLength(document);
         Double uniqueWordRatio = calculateUniqueWordRatio(document);
@@ -104,12 +104,14 @@ public class FeatureExtractor {
         String mostCommonCurrency = findMostCommonCurrency(document);
         String mostCommonSurname = findMostCommonSurname(document);
         String mostCommonCountry = findMostCommonCountry(document);
+        Double FRE = calculateFleschReadingEase(document);
 
         return new Features(totalLetters, avgWordLength, avgSentenceLength, uniqueWordRatio,
-                mostCommonSurname, mostCommonCurrency, mostCommonCountry, mostCommonUnitSystem, mostCommonCapitalized);
+                mostCommonSurname, mostCommonCurrency, mostCommonCountry, mostCommonUnitSystem, mostCommonCapitalized,
+                FRE);
     }
 
-    public static Integer countTotalLetters(CoreDocument document) {
+    public static Double countTotalLetters(CoreDocument document) {
         int count = 0;
 
         for (CoreLabel token : document.tokens()) {
@@ -120,14 +122,14 @@ public class FeatureExtractor {
                 }
             }
         }
-        return count;
+        return (double) count;
     }
 
     public static Double calculateAverageWordLength(CoreDocument document) {
         int totalLength = 0;
         int wordCount = 0;
 
-        for (CoreLabel token: document.tokens()) {
+        for (CoreLabel token : document.tokens()) {
             String word = token.word();
 
             // tokeny które zawierają litery
@@ -169,9 +171,7 @@ public class FeatureExtractor {
     }
 
     public static String findMostCommonCapitalizedWord(CoreDocument document) {
-        Map<String, Integer> capitalizedWord = new HashMap<>();
-        Map<String, Integer> firstPosition = new HashMap<>();
-        int position = 0;
+        Map<String, Integer> capitalizedWord = new LinkedHashMap<>();
 
         for (CoreSentence sentence : document.sentences()) {
             List<CoreLabel> tokens = sentence.tokens();
@@ -181,16 +181,11 @@ public class FeatureExtractor {
 
                 if (word.matches(".*[a-zA-Z].*") && Character.isUpperCase(word.charAt(0))) {
                     capitalizedWord.put(word, capitalizedWord.getOrDefault(word, 0) + 1);
-                    firstPosition.putIfAbsent(word, position);
                 }
-                position++;
             }
         }
 
-        return capitalizedWord.entrySet().stream()
-                .max(Comparator.comparingInt(Map.Entry<String, Integer>::getValue)
-                        .thenComparingInt(e -> -firstPosition.get(e.getKey())))
-                .map(Map.Entry::getKey).orElse(null);
+        return getMaxCount(capitalizedWord);
     }
 
     public static Boolean determineUnitSystem(CoreDocument document) {
@@ -318,4 +313,61 @@ public class FeatureExtractor {
 
         return max.getKey();
     }
+
+    public static Integer countTotalSyllables(CoreDocument document) {
+        char[] vowels = {'a', 'e', 'i', 'o', 'u', 'y'};
+        int numVowels = 0;
+        boolean lastWasVowel;
+        String currentWord;
+
+        for (CoreLabel token : document.tokens()) {
+            currentWord = token.word().toLowerCase();
+            lastWasVowel = false;
+
+            for (char wc : currentWord.toCharArray()) {
+                boolean foundVowel = false;
+                for (char v : vowels) {// nie liczymy dyftongów
+                    if (v == wc && lastWasVowel) {
+                        foundVowel = true;
+                        lastWasVowel = true;
+                        break;
+                    } else if (v == wc && !lastWasVowel) {
+                        numVowels++;
+                        foundVowel = true;
+                        lastWasVowel = true;
+                        break;
+                    }
+                }
+                // jeśli cykl zakończył się i nie znaleziono samogłoski, ustawiamy lastWasVowel na false
+                if (!foundVowel) {
+                    lastWasVowel = false;
+                }
+            }
+
+            // usuń "es" - zwykle jest nieme
+            if (currentWord.length() > 2 && currentWord.endsWith("es")) {
+                numVowels--;
+            }
+            // usuń nieme "e"
+            else if (currentWord.length() > 1 && currentWord.endsWith("e")) {
+                numVowels--;
+            }
+        }
+        return numVowels;
+    }
+
+    public static Double calculateFleschReadingEase(CoreDocument document) {
+        int sentenceCount = document.sentences().size();
+        int syllableCount = countTotalSyllables(document);
+        int wordCount = 0;
+
+        for (CoreLabel token : document.tokens()) {
+            String word = token.word().toLowerCase();
+            if (word.matches(".*[a-zA-Z].*")) {
+                wordCount++;
+            }
+        }
+        return 206.835 - 1.015 * ((double) wordCount/sentenceCount) - 84.6 * ((double) syllableCount/wordCount);
+    }
+
 }

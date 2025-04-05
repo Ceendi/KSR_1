@@ -1,15 +1,18 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        List<Article> articles = SGMParser.convert("data/reut2-000.sgm");
+        List<Article> articles = Serializer.readArticlesFromFile();
 
-        for (Article article : articles) {
-            Features features = FeatureExtractor.extractFeatures(article);
-            article.setFeatures(features);
-            System.out.println(article);
-        }
+        List<Article> iLoveTesting = new ArrayList<>(articles.subList(0, 3));
+
+        Normalizator.normalizeArticles(iLoveTesting);
+
+        System.out.println(iLoveTesting);
+
+        System.out.println(Metrics.euclideanDistance(iLoveTesting.getFirst(), iLoveTesting.getLast()));
     }
 }

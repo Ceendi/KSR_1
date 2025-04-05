@@ -1,19 +1,20 @@
 package org.example;
 
 public class Features {
-    private final int letterCount;
-    private final double avgWordLength;
-    private final double avgSentenceLength;
-    private final double uniqueWordRatio;
+    private final Double letterCount;
+    private final Double avgWordLength;
+    private final Double avgSentenceLength;
+    private final Double uniqueWordRatio;
     private final String mostCommonSurname;
     private final String mostCommonCurrency;
     private final String mostCommonCountry;
     private final Boolean mostCommonUnitSystem;
     private final String mostFrequentCapitalized;
+    private final Double FRE;
 
-    public Features(int letterCount, double avgWordLength, double avgSentenceLength, double uniqueWordRatio,
+    public Features(Double letterCount, Double avgWordLength, Double avgSentenceLength, Double uniqueWordRatio,
                     String mostCommonSurname, String mostCommonCurrency, String mostCommonCountry,
-                    Boolean mostCommonUnitSystem, String mostFrequentCapitalized) {
+                    Boolean mostCommonUnitSystem, String mostFrequentCapitalized, Double FRE) {
         this.letterCount = letterCount;
         this.avgWordLength = avgWordLength;
         this.avgSentenceLength = avgSentenceLength;
@@ -23,21 +24,22 @@ public class Features {
         this.mostCommonCountry = mostCommonCountry;
         this.mostCommonUnitSystem = mostCommonUnitSystem;
         this.mostFrequentCapitalized = mostFrequentCapitalized;
+        this.FRE = FRE;
     }
 
-    public int getLetterCount() {
+    public Double getLetterCount() {
         return letterCount;
     }
 
-    public double getAvgWordLength() {
+    public Double getAvgWordLength() {
         return avgWordLength;
     }
 
-    public double getAvgSentenceLength() {
+    public Double getAvgSentenceLength() {
         return avgSentenceLength;
     }
 
-    public double getUniqueWordRatio() {
+    public Double getUniqueWordRatio() {
         return uniqueWordRatio;
     }
 
@@ -61,6 +63,10 @@ public class Features {
         return mostFrequentCapitalized;
     }
 
+    public Double getFRE() {
+        return FRE;
+    }
+
     @Override
     public String toString() {
         return "Features{" +
@@ -71,8 +77,9 @@ public class Features {
                 ", mostCommonSurname='" + mostCommonSurname + '\'' +
                 ", mostCommonCurrency='" + mostCommonCurrency + '\'' +
                 ", mostCommonCountry='" + mostCommonCountry + '\'' +
-                ", mostCommonUnitSystem='" + mostCommonUnitSystem + '\'' +
+                ", mostCommonUnitSystem=" + mostCommonUnitSystem +
                 ", mostFrequentCapitalized='" + mostFrequentCapitalized + '\'' +
+                ", FRE=" + FRE +
                 '}';
     }
 }
