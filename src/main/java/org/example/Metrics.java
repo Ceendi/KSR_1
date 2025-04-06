@@ -74,6 +74,8 @@ public class Metrics {
         if (a == null || b == null) {
             return 0.0;
         }
+        a = a.toLowerCase();
+        b = b.toLowerCase();
         int correct = 0;
         int total = 0;
         int minLength = Math.min(a.length(), b.length());
@@ -87,10 +89,10 @@ public class Metrics {
             }
         }
 
-        System.out.println((double) correct / total);
+//        System.out.println("test dla kacper a: "+ a +" b: "+ b +" ngram: "+ (double) correct / total);
         correct = 0;
         total = 0;
-        for (int i = 1; i < minLength; i++) {
+        for (int i = 1; i <= minLength; i++) {
             for (int j = 0; j < minLength - i + 1; j++) {
                 if (b.contains(a.substring(j, j + i))) {
                     correct++;
@@ -98,7 +100,7 @@ public class Metrics {
                 total++;
             }
         }
-        System.out.println((double) correct / total);
+//        System.out.println("test dla kuby a: " + a + " b: " + b + " ngram: " + (double) correct / total);
         return total == 0 ? 0.0 : (double) correct / total;
     }
 }
