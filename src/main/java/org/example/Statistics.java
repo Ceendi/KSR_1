@@ -3,7 +3,7 @@ package org.example;
 import java.util.Map;
 
 public class Statistics {
-    public static Double calculatePrecision(Map<Article, String> classifiedArticles) {
+    public static Double calculateAccuracy(Map<Article, String> classifiedArticles) {
         int correct = 0;
         for (Map.Entry<Article, String> entry : classifiedArticles.entrySet()) {
             if (entry.getKey().getLabel().equals(entry.getValue())) {

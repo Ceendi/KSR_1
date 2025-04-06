@@ -1,7 +1,13 @@
 package org.example;
 
 
+import java.util.function.BiFunction;
+
 public class Metrics {
+    public static final BiFunction<Article, Article, Double> EUCLIDEAN = Metrics::euclideanDistance;
+    public static final BiFunction<Article, Article, Double> CHEBYSHEV = Metrics::chebyshevDistance;
+    public static final BiFunction<Article, Article, Double> MANHATTAN = Metrics::manhattanDistance;
+
     public static Double euclideanDistance(Article a, Article b) {
         double distance = 0.0;
         Features f1 = a.getFeatures();
@@ -90,5 +96,17 @@ public class Metrics {
         }
 
         return total == 0 ? 0.0 : (double) correct / total;
+    }
+
+    public static String getMetricName(BiFunction<Article, Article, Double> metric) {
+
+        if (metric.equals(EUCLIDEAN)) {
+            return "Metryka Euklidesa";
+        } else if (metric.equals(CHEBYSHEV)) {
+            return "Metryka Czebyszewa";
+        } else if (metric.equals(MANHATTAN)) {
+            return "Metryka Manhattan";
+        }
+        return "Nieznana metryka";
     }
 }
