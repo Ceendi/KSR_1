@@ -22,7 +22,7 @@ public class Metrics {
             distance += 1;
         }
 
-        return distance;
+        return Math.sqrt(distance);
     }
 
     public static Double chebyshevDistance(Article a, Article b) {
@@ -38,7 +38,7 @@ public class Metrics {
         double d7 = 1 - generalizedNGramDistance(f1.getMostCommonSurname(), f2.getMostCommonSurname());
         double d8 = 1 - generalizedNGramDistance(f1.getMostCommonCurrency(), f2.getMostCommonCurrency());
         double d9 = 1 - generalizedNGramDistance(f1.getMostFrequentCapitalized(), f2.getMostFrequentCapitalized());
-        double d10 = 0;
+        double d10;
         if (f1.getMostCommonUnitSystem() != null && f2.getMostCommonUnitSystem() != null) {
             d10 = Math.abs((f1.getMostCommonUnitSystem() ? 1 : 0) - (f2.getMostCommonUnitSystem() ? 1 : 0));
         } else {
@@ -61,7 +61,7 @@ public class Metrics {
         double d7 = 1 - generalizedNGramDistance(f1.getMostCommonSurname(), f2.getMostCommonSurname());
         double d8 = 1 - generalizedNGramDistance(f1.getMostCommonCurrency(), f2.getMostCommonCurrency());
         double d9 = 1 - generalizedNGramDistance(f1.getMostFrequentCapitalized(), f2.getMostFrequentCapitalized());
-        double d10 = 0;
+        double d10;
         if (f1.getMostCommonUnitSystem() != null && f2.getMostCommonUnitSystem() != null) {
             d10 = Math.abs((f1.getMostCommonUnitSystem() ? 1 : 0) - (f2.getMostCommonUnitSystem() ? 1 : 0));
         } else {
@@ -76,22 +76,10 @@ public class Metrics {
         }
         a = a.toLowerCase();
         b = b.toLowerCase();
-        int correct = 0;
-        int total = 0;
         int minLength = Math.min(a.length(), b.length());
 
-        for (int n = 1; n <= minLength; n++) {
-            for (int ktora_litera = 0; ktora_litera + n <= minLength; ktora_litera++) {
-                if (b.contains(a.substring(ktora_litera, ktora_litera + n))) {
-                    correct++;
-                }
-                total++;
-            }
-        }
-
-//        System.out.println("test dla kacper a: "+ a +" b: "+ b +" ngram: "+ (double) correct / total);
-        correct = 0;
-        total = 0;
+        int correct = 0;
+        int total = 0;
         for (int i = 1; i <= minLength; i++) {
             for (int j = 0; j < minLength - i + 1; j++) {
                 if (b.contains(a.substring(j, j + i))) {
@@ -100,7 +88,7 @@ public class Metrics {
                 total++;
             }
         }
-//        System.out.println("test dla kuby a: " + a + " b: " + b + " ngram: " + (double) correct / total);
+
         return total == 0 ? 0.0 : (double) correct / total;
     }
 }

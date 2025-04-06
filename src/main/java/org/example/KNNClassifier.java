@@ -4,33 +4,28 @@ import java.util.*;
 import java.util.function.BiFunction;
 
 public class KNNClassifier {
-    private List<Article> trainingArticles; // Lista artykułów treningowych
-    private int k; // Liczba sąsiadów
+    private List<Article> trainingArticles;
+    private int k;
 
     public KNNClassifier(int k) {
         this.k = k;
         this.trainingArticles = new ArrayList<>();
     }
 
-    // Metoda trenowania - dodanie artykułów do listy
     public void train(List<Article> articles) {
         this.trainingArticles.addAll(articles);
     }
 
-    // Metoda klasyfikowania nowego artykułu
     public String classify(Article newArticle, BiFunction<Article, Article, Double> distanceFunction) {
         List<Map.Entry<Article, Double>> distances = new ArrayList<>();
 
-        // Obliczanie odległości do wszystkich artykułów w zbiorze treningowym
         for (Article trainingArticle : trainingArticles) {
             double distance = distanceFunction.apply(newArticle, trainingArticle);
             distances.add(new AbstractMap.SimpleEntry<>(trainingArticle, distance));
         }
 
-        // Sortowanie artykułów według odległości
         distances.sort(Comparator.comparingDouble(Map.Entry::getValue));
 
-        // Wybieranie k najbliższych sąsiadów
         Map<String, Integer> labelVotes = new HashMap<>();
         for (int i = 0; i < k; i++) {
             String label = distances.get(i).getKey().getLabel();
@@ -40,7 +35,6 @@ public class KNNClassifier {
         return resolveVotes(labelVotes, distances.subList(0, k));
     }
 
-    // Funkcja pomocnicza do uzyskania etykiety z największą liczbą głosów
     public String resolveVotes(Map<String, Integer> votes, List<Map.Entry<Article, Double>> distances) {
         List<String> candidates = new ArrayList<>();
         int maxVotes = Collections.max(votes.entrySet(), Map.Entry.comparingByValue()).getValue();

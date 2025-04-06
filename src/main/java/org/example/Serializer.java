@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Serializer {
@@ -15,13 +16,8 @@ public class Serializer {
     static {
         gson = new Gson();
     }
-    public static void saveArticlesToFile() {
-        List<Article> articles = SGMParser.convert("data/reut2-000.sgm");
-
-//        int n = 215;
-//        Features feature = FeatureExtractor.extractFeatures(articles.get(n));
-//        articles.get(n).setFeatures(feature);
-//        System.out.println(articles.get(n));
+    public static void saveArticlesToFile(List<String> fileNames) {
+        List<Article> articles = SGMParser.convert(fileNames);
 
         for (Article article : articles) {
             Features features = FeatureExtractor.extractFeatures(article);
