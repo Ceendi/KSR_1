@@ -1,6 +1,9 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Statistics {
     public static Double calculateAccuracy(Map<Article, String> classifiedArticles) {
@@ -47,5 +50,22 @@ public class Statistics {
             }
         }
         return (double) TP / (TP + FP);
+    }
+
+    public static Double calculateF1Score(Map<Article, String> classifiedArticles) {
+        return 0.;
+    }
+
+    public static int[][] calculateConfusionMatrix(Map<Article, String> classifiedArticles, Set<String> labels) {
+        int[][] confusionMatrix = new int[6][6];
+        List<String> labelList = new ArrayList<>(labels);
+        for (int i = 0; i < labels.size(); i++) {
+            for (Map.Entry<Article, String> entry : classifiedArticles.entrySet()) {
+                if (entry.getKey().getLabel().equals(labelList.get(i))) {
+                    confusionMatrix[i][labelList.indexOf(entry.getValue())]++;
+                }
+            }
+        }
+        return confusionMatrix;
     }
 }
