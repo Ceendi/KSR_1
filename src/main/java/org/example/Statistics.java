@@ -28,7 +28,7 @@ public class Statistics {
                 }
             }
         }
-        return (double) TP / (TP + FN);
+        return (TP + FN) == 0 ? 0.0 : (double) TP / (TP + FN);
     }
 
     public static Double calculatePrecision(Map<Article, String> classifiedArticles, String label) {
@@ -46,6 +46,6 @@ public class Statistics {
                 FP++;
             }
         }
-        return (double) TP / (TP + FP);
+        return (TP + FP) == 0 ? 0.0 : (double) TP / (TP + FP);
     }
 }

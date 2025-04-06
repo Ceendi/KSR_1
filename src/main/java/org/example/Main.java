@@ -2,17 +2,84 @@ package org.example;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
-import static org.example.Metrics.EUCLIDEAN;
 import static org.example.Metrics.getMetricName;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-       double splitPercentage = 0.5;
-       int neighboursNumber = 10;
-       BiFunction<Article, Article, Double> metricFunction = EUCLIDEAN;
+        List<String> selectedFeatureNames = new ArrayList<>(List.of(
+                "letterCount",
+                "avgWordLength",
+                "avgSentenceLength",
+                "uniqueWordRatio",
+                "FRE",
+                "mostCommonSurname",
+                "mostCommonCountry",
+                "mostCommonCurrency",
+                "mostFrequentCapitalized",
+                "mostCommonUnitSystem"
+        ));
+
+        Scanner scanner = new Scanner(System.in);
+
+        //---------------------------K---------------------------
+        System.out.print("Podaj liczbę sąsiadów (k): ");
+        int neighboursNumber = scanner.nextInt();
+        scanner.nextLine();
+        //-------------------------------------------------------
+
+        //----------------------PODZIAL--------------------------
+        double splitPercentage = -1.0;
+        while (splitPercentage < 0.0 || splitPercentage > 1.0) {
+            System.out.print("Podaj procent artykułów przeznaczonych na trening (w przedziale 0 a 1): ");
+            splitPercentage = scanner.nextDouble();
+        }
+        //-------------------------------------------------------
+
+        //--------------------METRYKI-----------------------------
+        System.out.println("Wybierz metrykę:");
+        System.out.println("1. Euclidean");
+        System.out.println("2. Chebyshev");
+        System.out.println("3. Manhattan");
+        System.out.print("Twój wybór: ");
+        int metricChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        TriFunction<Article, Article, List<String>, Double> metricFunction = switch (metricChoice) {
+            case 2 -> Metrics.CHEBYSHEV;
+            case 3 -> Metrics.MANHATTAN;
+            default -> Metrics.EUCLIDEAN;
+        };
+        //--------------------------------------------------------
+
+        //-------------------------CECHY--------------------------
+        System.out.println("Aktualnie wybrane cechy do klasyfikacji:");
+        for (int i = 0; i < selectedFeatureNames.size(); i++) {
+            System.out.println((i + 1) + ". " + selectedFeatureNames.get(i));
+        }
+
+        System.out.print("Podaj cechy do usunięcia (oddziel je spacjami): ");
+        String input = scanner.nextLine();
+
+        if (!input.trim().isEmpty()) {
+            String[] featureNumbers = input.split(" ");
+            List<String> featuresToRemove = new ArrayList<>();
+            for (String featureNumber : featureNumbers) {
+                try {
+                    int index = Integer.parseInt(featureNumber) - 1;
+                    if (index >= 0 && index < selectedFeatureNames.size()) {
+                        featuresToRemove.add(selectedFeatureNames.get(index));
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Błędny numer: " + featureNumber);
+                }
+            }
+            selectedFeatureNames.removeAll(featuresToRemove);
+        }
+
+        
+        //--------------------------------------------------------
 
 //        List<String> fileNames;
 //        try (Stream<Path> paths = Files.list(Path.of("data/"))) {
@@ -38,7 +105,7 @@ public class Main {
 
         Map<Article, String> articleLableMap = new HashMap<>();
         for (Article article : testArticles) {
-            articleLableMap.put(article, classifier.classify(article, metricFunction));
+            articleLableMap.put(article, classifier.classify(article, metricFunction, selectedFeatureNames));
         }
 
         Set<String> labels = articles.stream().map(Article::getLabel).collect(Collectors.toSet());
