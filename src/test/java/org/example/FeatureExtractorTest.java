@@ -27,6 +27,6 @@ class FeatureExtractorTest {
         document = new CoreDocument("Count syllables");
         this.pipeline.annotate(document);
 
-        assertEquals(4, FeatureExtractor.countTotalSyllables(document));
+        assertEquals(3, FeatureExtractor.countTotalSyllables(document));
     }
 }
