@@ -1,8 +1,12 @@
 package org.example;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.example.Metrics.getMetricName;
 
@@ -46,10 +50,11 @@ public class Main {
         int metricChoice = scanner.nextInt();
         scanner.nextLine();
 
-        TriFunction<Article, Article, List<String>, Double> metricFunction = switch (metricChoice) {
-            case 2 -> Metrics.CHEBYSHEV;
-            case 3 -> Metrics.MANHATTAN;
-            default -> Metrics.EUCLIDEAN;
+        BiFunction<Article, Article, Double> metricFunction = switch (metricChoice) {
+//            case 2 -> Metrics.CHEBYSHEV;
+            case 1 -> Metrics.EUCLIDEAN;
+//            case 3 -> Metrics.MANHATTAN;
+            default -> null;
         };
         //--------------------------------------------------------
 
@@ -87,7 +92,7 @@ public class Main {
 //                   .map(Path::toString)
 //                   .filter(fileName -> fileName.toString().startsWith("data\\reut2"))
 //                   .toList()
-//                   .subList(0, 10);
+//                   .subList(0, 1);
 //       } catch (IOException e) {
 //           throw new RuntimeException(e);
 //       }

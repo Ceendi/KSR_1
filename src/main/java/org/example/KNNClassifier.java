@@ -1,6 +1,7 @@
 package org.example;
 
 import java.util.*;
+import java.util.function.BiFunction;
 
 public class KNNClassifier {
     private final List<Article> trainingArticles;
@@ -15,11 +16,11 @@ public class KNNClassifier {
         this.trainingArticles.addAll(articles);
     }
 
-    public String classify(Article newArticle, TriFunction<Article, Article, List<String>, Double> distanceFunction, List<String> selectedFeatureNames) {
+    public String classify(Article newArticle, BiFunction<Article, Article, Double> distanceFunction, List<String> selectedFeatureNames) {
         List<Map.Entry<Article, Double>> distances = new ArrayList<>();
 
         for (Article trainingArticle : trainingArticles) {
-            double distance = distanceFunction.apply(newArticle, trainingArticle, selectedFeatureNames);
+            double distance = distanceFunction.apply(newArticle, trainingArticle);
             distances.add(new AbstractMap.SimpleEntry<>(trainingArticle, distance));
         }
 

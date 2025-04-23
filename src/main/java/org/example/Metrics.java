@@ -2,57 +2,68 @@ package org.example;
 
 
 import java.util.List;
+import java.util.function.BiFunction;
 
 
 public class Metrics {
-    public static final TriFunction<Article, Article, List<String>, Double> EUCLIDEAN = Metrics::euclideanDistance;
-    public static final TriFunction<Article, Article, List<String>, Double> CHEBYSHEV = Metrics::chebyshevDistance;
-    public static final TriFunction<Article, Article, List<String>, Double> MANHATTAN = Metrics::manhattanDistance;
+    public static final BiFunction<Article, Article, Double> EUCLIDEAN = Metrics::euclideanDistance;
+//    public static final BiFunction<Article, Article, Double> CHEBYSHEV = Metrics::chebyshevDistance;
+//    public static final BiFunction<Article, Article, Double> MANHATTAN = Metrics::manhattanDistance;
 
-    public static Double euclideanDistance(Article a, Article b, List<String> selectedFeatures) {
+    public static Double euclideanDistance(Article a, Article b) {
         double distance = 0.0;
-        Features f1 = a.getFeatures();
-        Features f2 = b.getFeatures();
 
-        if (selectedFeatures.contains("FRE")) {
-            distance += Math.pow(f1.getFRE() - f2.getFRE(), 2);
-        }
-        if (selectedFeatures.contains("avgSentenceLength")) {
-            distance += Math.pow(f1.getAvgSentenceLength() - f2.getAvgSentenceLength(), 2);
-        }
-        if (selectedFeatures.contains("letterCount")) {
-            distance += Math.pow(f1.getLetterCount() - f2.getLetterCount(), 2);
-        }
-        if (selectedFeatures.contains("avgWordLength")) {
-            distance += Math.pow(f1.getAvgWordLength() - f2.getAvgWordLength(), 2);
-        }
-        if (selectedFeatures.contains("uniqueWordRatio")) {
-            distance += Math.pow(f1.getUniqueWordRatio() - f2.getUniqueWordRatio(), 2);
-        }
-        if (selectedFeatures.contains("mostCommonCountry")) {
-            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostCommonCountry(), f2.getMostCommonCountry()), 2);
-        }
-        if (selectedFeatures.contains("mostCommonSurname")) {
-            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostCommonSurname(), f2.getMostCommonSurname()), 2);
-        }
-        if (selectedFeatures.contains("mostCommonCurrency")) {
-            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostCommonCurrency(), f2.getMostCommonCurrency()), 2);
-        }
-        if (selectedFeatures.contains("mostFrequentCapitalized")) {
-            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostFrequentCapitalized(), f2.getMostFrequentCapitalized()), 2);
-        }
-        if (selectedFeatures.contains("mostCommonUnitSystem")) {
-            if (f1.getMostCommonUnitSystem() != null && f2.getMostCommonUnitSystem() != null) {
-                distance += Math.pow((f1.getMostCommonUnitSystem() ? 1 : 0) - (f2.getMostCommonUnitSystem() ? 1 : 0), 2);
-            } else {
-                distance += 1;
+        for (String key: a.getFeatureMap().keySet()) {
+            Object v1 = a.getFeatureMap().get(key);
+            Object v2 = b.getFeatureMap().get(key);
+            if (v1 instanceof Number && v2 instanceof Number) {
+                distance += Math.pow(((Number) v1).doubleValue() - ((Number) v2).doubleValue(), 2);
+            } else if (v1 instanceof String && v2 instanceof String) {
+                distance += Math.pow(1 - generalizedNGramDistance((String) v1, (String) v2), 2);
+            } else if (v1 instanceof Boolean && v2 instanceof Boolean) {
+                distance += Math.pow(((Boolean) v1 ? 1 : 0) - ((Boolean) v2 ? 1 : 0), 2);
             }
         }
+
+//        if (selectedFeatures.contains("FRE")) {
+//            distance += Math.pow(f1.getFRE() - f2.getFRE(), 2);
+//        }
+//        if (selectedFeatures.contains("avgSentenceLength")) {
+//            distance += Math.pow(f1.getAvgSentenceLength() - f2.getAvgSentenceLength(), 2);
+//        }
+//        if (selectedFeatures.contains("letterCount")) {
+//            distance += Math.pow(f1.getLetterCount() - f2.getLetterCount(), 2);
+//        }
+//        if (selectedFeatures.contains("avgWordLength")) {
+//            distance += Math.pow(f1.getAvgWordLength() - f2.getAvgWordLength(), 2);
+//        }
+//        if (selectedFeatures.contains("uniqueWordRatio")) {
+//            distance += Math.pow(f1.getUniqueWordRatio() - f2.getUniqueWordRatio(), 2);
+//        }
+//        if (selectedFeatures.contains("mostCommonCountry")) {
+//            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostCommonCountry(), f2.getMostCommonCountry()), 2);
+//        }
+//        if (selectedFeatures.contains("mostCommonSurname")) {
+//            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostCommonSurname(), f2.getMostCommonSurname()), 2);
+//        }
+//        if (selectedFeatures.contains("mostCommonCurrency")) {
+//            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostCommonCurrency(), f2.getMostCommonCurrency()), 2);
+//        }
+//        if (selectedFeatures.contains("mostFrequentCapitalized")) {
+//            distance += Math.pow(1 - generalizedNGramDistance(f1.getMostFrequentCapitalized(), f2.getMostFrequentCapitalized()), 2);
+//        }
+//        if (selectedFeatures.contains("mostCommonUnitSystem")) {
+//            if (f1.getMostCommonUnitSystem() != null && f2.getMostCommonUnitSystem() != null) {
+//                distance += Math.pow((f1.getMostCommonUnitSystem() ? 1 : 0) - (f2.getMostCommonUnitSystem() ? 1 : 0), 2);
+//            } else {
+//                distance += 1;
+//            }
+//        }
 
         return Math.sqrt(distance);
     }
 
-    public static Double chebyshevDistance(Article a, Article b, List<String> selectedFeatures) {
+   /* public static Double chebyshevDistance(Article a, Article b, List<String> selectedFeatures) {
         Features f1 = a.getFeatures();
         Features f2 = b.getFeatures();
 
@@ -141,8 +152,8 @@ public class Metrics {
             distance += d10;
         }
 
-        return distance;
-    }
+        return distance;*/
+//    }
 
     public static Double generalizedNGramDistance(String a, String b) {
         if (a == null || b == null) {
@@ -155,7 +166,6 @@ public class Metrics {
         int maxLength = Math.max(a.length(), b.length());
         int n_1 = 2;
         int n_2 = minLength;
-
 
         double fun = (double) ((maxLength - n_1+1)*(maxLength-n_1+2)-(maxLength-n_2)*(maxLength-n_2+1))/2;
         int correct = 0;
@@ -170,15 +180,15 @@ public class Metrics {
         return (double) correct / fun;
     }
 
-    public static String getMetricName(TriFunction<Article, Article, List<String>, Double> metric) {
+    public static String getMetricName(BiFunction<Article, Article, Double> metric) {
 
         if (metric.equals(EUCLIDEAN)) {
             return "Metryka Euklidesa";
-        } else if (metric.equals(CHEBYSHEV)) {
+        } /*else if (metric.equals(CHEBYSHEV)) {
             return "Metryka Czebyszewa";
         } else if (metric.equals(MANHATTAN)) {
             return "Metryka Manhattan";
-        }
+        }*/
         return "Nieznana metryka";
     }
 }

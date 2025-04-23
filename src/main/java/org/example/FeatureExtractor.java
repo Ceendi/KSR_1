@@ -91,24 +91,20 @@ public class FeatureExtractor {
         }
     }
 
-    public static Features extractFeatures(Article article) {
+    public static void extractFeatures(Article article) {
         CoreDocument document = new CoreDocument(article.getText());
         pipeline.annotate(document);
 
-        Double totalLetters = countTotalLetters(document);
-        Double avgWordLength = calculateAverageWordLength(document);
-        Double avgSentenceLength = calculateAverageSentenceLength(document);
-        Double uniqueWordRatio = calculateUniqueWordRatio(document);
-        String mostCommonCapitalized = findMostCommonCapitalizedWord(document);
-        Boolean mostCommonUnitSystem = determineUnitSystem(document);
-        String mostCommonCurrency = findMostCommonCurrency(document);
-        String mostCommonSurname = findMostCommonSurname(document);
-        String mostCommonCountry = findMostCommonCountry(document);
-        Double FRE = calculateFleschReadingEase(document);
-
-        return new Features(totalLetters, avgWordLength, avgSentenceLength, uniqueWordRatio,
-                mostCommonSurname, mostCommonCurrency, mostCommonCountry, mostCommonUnitSystem, mostCommonCapitalized,
-                FRE);
+        article.setFeature("letterCount", countTotalLetters(document));
+        article.setFeature("avgWordLength", calculateAverageWordLength(document));
+        article.setFeature("avgSentenceLength", calculateAverageSentenceLength(document));
+        article.setFeature("uniqueWordRatio", calculateUniqueWordRatio(document));
+        article.setFeature("mostCommonSurname", findMostCommonCapitalizedWord(document));
+        article.setFeature("mostCommonCurrency", determineUnitSystem(document));
+        article.setFeature("mostCommonCountry", findMostCommonCurrency(document));
+        article.setFeature("mostCommonUnitSystem", findMostCommonSurname(document));
+        article.setFeature("mostFrequentCapitalized", findMostCommonCountry(document));
+        article.setFeature("FRE", calculateFleschReadingEase(document));
     }
 
     public static Double countTotalLetters(CoreDocument document) {

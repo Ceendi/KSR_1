@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 public class SGMParser {
     public final static List<String> classifiedCountries = new LinkedList<>(List.of("west-germany", "usa", "france", "uk", "canada", "japan"));
+
     public static List<Article> convert(List<String> fileNames) {
         ArrayList<Article> articles = new ArrayList<>();
         for (String fileName : fileNames) {
@@ -47,7 +48,12 @@ public class SGMParser {
                     }
 
                     if (placesArray.size() == 1 && !bodyText.isEmpty() && classifiedCountries.contains(placesArray.getFirst())) {
-                        articles.add(new Article(bodyText, placesArray.getFirst()));
+                        articles.add(
+                                new Article.Builder()
+                                        .text(bodyText)
+                                        .label(placesArray.getFirst())
+                                        .build()
+                        );
                     }
                 }
             } catch (IOException e) {

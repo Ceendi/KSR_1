@@ -19,8 +19,7 @@ public class Serializer {
         List<Article> articles = SGMParser.convert(fileNames);
 
         for (Article article : articles) {
-            Features features = FeatureExtractor.extractFeatures(article);
-            article.setFeatures(features);
+            FeatureExtractor.extractFeatures(article);
         }
 
         String json = gson.toJson(articles);
