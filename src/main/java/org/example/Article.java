@@ -31,6 +31,15 @@ public class Article {
         featureMap.put(name, value);
     }
 
+    @Override
+    public String toString() {
+        return "Article{" +
+                "text='" + text + '\'' +
+                ", label='" + label + '\'' +
+                ", featureMap=" + featureMap +
+                '}';
+    }
+
     public static class Builder {
         private String text;
         private String label;
@@ -53,7 +62,7 @@ public class Article {
 
         public Article build() {
             if (text == null || label == null) {
-                throw new IllegalStateException("Article must have id, text, and label");
+                throw new IllegalStateException("Article must have text, and label");
             }
             return new Article(this);
         }

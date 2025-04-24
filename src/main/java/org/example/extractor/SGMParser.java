@@ -1,4 +1,6 @@
-package org.example;
+package org.example.extractor;
+
+import org.example.Article;
 
 import java.util.*;
 import java.io.IOException;

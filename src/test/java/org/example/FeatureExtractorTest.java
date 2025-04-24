@@ -2,6 +2,7 @@ package org.example;
 
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import org.example.extractor.FeatureExtractor;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.util.Properties;

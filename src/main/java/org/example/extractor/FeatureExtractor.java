@@ -1,10 +1,11 @@
-package org.example;
+package org.example.extractor;
 
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.CoreDocument;
 import edu.stanford.nlp.pipeline.CoreSentence;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+import org.example.Article;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -99,11 +100,11 @@ public class FeatureExtractor {
         article.setFeature("avgWordLength", calculateAverageWordLength(document));
         article.setFeature("avgSentenceLength", calculateAverageSentenceLength(document));
         article.setFeature("uniqueWordRatio", calculateUniqueWordRatio(document));
-        article.setFeature("mostCommonSurname", findMostCommonCapitalizedWord(document));
-        article.setFeature("mostCommonCurrency", determineUnitSystem(document));
-        article.setFeature("mostCommonCountry", findMostCommonCurrency(document));
-        article.setFeature("mostCommonUnitSystem", findMostCommonSurname(document));
-        article.setFeature("mostFrequentCapitalized", findMostCommonCountry(document));
+        article.setFeature("mostFrequentCapitalized", findMostCommonCapitalizedWord(document));
+        article.setFeature("mostCommonUnitSystem", determineUnitSystem(document));
+        article.setFeature("mostCommonCurrency", findMostCommonCurrency(document));
+        article.setFeature("mostCommonSurname", findMostCommonSurname(document));
+        article.setFeature("mostCommonCountry", findMostCommonCountry(document));
         article.setFeature("FRE", calculateFleschReadingEase(document));
     }
 

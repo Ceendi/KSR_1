@@ -1,5 +1,11 @@
 package org.example;
 
+import org.example.classifier.KNNClassifier;
+import org.example.classifier.Metrics;
+import org.example.classifier.Statistics;
+import org.example.classifier.Normalizator;
+import org.example.extractor.Serializer;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -8,7 +14,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.example.Metrics.getMetricName;
+import static org.example.classifier.Metrics.getMetricName;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -51,9 +57,9 @@ public class Main {
         scanner.nextLine();
 
         BiFunction<Article, Article, Double> metricFunction = switch (metricChoice) {
-//            case 2 -> Metrics.CHEBYSHEV;
+            case 2 -> Metrics.CHEBYSHEV;
             case 1 -> Metrics.EUCLIDEAN;
-//            case 3 -> Metrics.MANHATTAN;
+            case 3 -> Metrics.MANHATTAN;
             default -> null;
         };
         //--------------------------------------------------------
@@ -86,21 +92,23 @@ public class Main {
         
         //--------------------------------------------------------
 
-//        List<String> fileNames;
-//        try (Stream<Path> paths = Files.list(Path.of("data/"))) {
-//           fileNames = paths
-//                   .map(Path::toString)
-//                   .filter(fileName -> fileName.toString().startsWith("data\\reut2"))
-//                   .toList()
-//                   .subList(0, 1);
-//       } catch (IOException e) {
-//           throw new RuntimeException(e);
-//       }
-//
-//        Serializer.saveArticlesToFile(fileNames);
+        List<String> fileNames;
+        try (Stream<Path> paths = Files.list(Path.of("data/"))) {
+           fileNames = paths
+                   .map(Path::toString)
+                   .filter(fileName -> fileName.toString().startsWith("data\\reut2"))
+                   .toList()
+                   .subList(0, 1);
+       } catch (IOException e) {
+           throw new RuntimeException(e);
+       }
+
+        Serializer.saveArticlesToFile(fileNames);
         List<Article> articles = Serializer.readArticlesFromFile();
 
         Normalizator.normalizeArticles(articles);
+
+        System.out.println(articles.subList(0, 20));
 
         KNNClassifier classifier = new KNNClassifier(neighboursNumber);
         List<Article> trainArticles = articles.subList(0, (int) (articles.size() * splitPercentage));
@@ -110,7 +118,7 @@ public class Main {
 
         Map<Article, String> articleLableMap = new HashMap<>();
         for (Article article : testArticles) {
-            articleLableMap.put(article, classifier.classify(article, metricFunction, selectedFeatureNames));
+            articleLableMap.put(article, classifier.classify(article, metricFunction));
         }
 
         Set<String> labels = articles.stream().map(Article::getLabel).collect(Collectors.toSet());

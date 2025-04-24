@@ -1,7 +1,9 @@
-package org.example;
+package org.example.extractor;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.example.Article;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -13,7 +15,7 @@ import java.util.List;
 public class Serializer {
     static Gson gson;
     static {
-        gson = new Gson();
+        gson = new GsonBuilder().serializeNulls().create();
     }
     public static void saveArticlesToFile(List<String> fileNames) {
         List<Article> articles = SGMParser.convert(fileNames);
