@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.classifier.Metrics;
+import org.example.classifier.Measurements;
 import org.junit.jupiter.api.Test;
 
 class MetricsTest {
@@ -9,7 +9,7 @@ class MetricsTest {
     void generalizedNGramDistance() {
         String x = "eemm";
         String y = "emm";
-        System.out.println(Metrics.generalizedNGramDistance(x, y));
+        System.out.println(Measurements.generalizedNGramDistance(x, y));
 
     }
 }

@@ -1,6 +1,5 @@
 package org.example;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +23,7 @@ public class Article {
     }
 
     public Map<String, Object> getFeatureMap() {
-        return Collections.unmodifiableMap(featureMap);
+        return featureMap;
     }
 
     public void setFeature(String name, Object value) {
@@ -43,7 +42,7 @@ public class Article {
     public static class Builder {
         private String text;
         private String label;
-        private Map<String, Object> featureMap = new HashMap<>();
+        private final Map<String, Object> featureMap = new HashMap<>();
 
         public Builder text(String text) {
             this.text = text;

@@ -185,7 +185,7 @@ public class FeatureExtractor {
         return getMaxCount(capitalizedWord);
     }
 
-    public static Boolean determineUnitSystem(CoreDocument document) {
+    public static Double determineUnitSystem(CoreDocument document) {
         int metricCount = 0;
         int imperialCount = 0;
 
@@ -199,13 +199,7 @@ public class FeatureExtractor {
             }
         }
 
-        if (metricCount > imperialCount) {
-            return true;
-        } else if (imperialCount > metricCount) {
-            return false;
-        } else {
-            return null;
-        }
+        return (metricCount + imperialCount) == 0 ? 0.5 : imperialCount / (imperialCount + metricCount);
     }
 
     private static class CurrencyMatch {
