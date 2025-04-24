@@ -26,8 +26,7 @@ public class Main {
         double splitPercentage = promptSplit(scanner);
         BiFunction<Article, Article, Double> metricFunction = promptMetric(scanner);
         promptFeatureRemoval(selectedFeatureNames, scanner);
-
-        // extractFeaturesAndSaveToFile(5); // only uncomment when you want to extract new features
+        // extractFeaturesAndSaveToFile(18); // only uncomment when you want to extract new features
         List<Article> articles = loadArticles();
 
         filterFeatures(articles, selectedFeatureNames);
