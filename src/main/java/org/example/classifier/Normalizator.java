@@ -12,14 +12,12 @@ public class Normalizator {
             return;
         }
 
-        // 1) Zidentyfikuj nazwy cech liczbowych
         Set<String> numericFeatures = articles.stream()
             .flatMap(a -> a.getFeatureMap().entrySet().stream())
             .filter(e -> e.getValue() instanceof Number)
             .map(Map.Entry::getKey)
             .collect(Collectors.toSet());
 
-        // 2) Oblicz statystyki (min, max) dla każdej cechy liczbowej
         Map<String, DoubleSummaryStatistics> stats = new HashMap<>();
         for (String feature : numericFeatures) {
             DoubleSummaryStatistics stat = articles.stream()
@@ -31,7 +29,6 @@ public class Normalizator {
             stats.put(feature, stat);
         }
 
-        // 3) Znormalizuj każdą cechę w każdym artykule
         for (Article article : articles) {
             for (String feature : numericFeatures) {
                 Object valObj = article.getFeatureMap().get(feature);

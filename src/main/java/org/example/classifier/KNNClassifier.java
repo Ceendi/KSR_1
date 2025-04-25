@@ -20,12 +20,10 @@ public class KNNClassifier {
 
     public String classify(Article newArticle, BiFunction<Article, Article, Double> distanceFunction) {
         List<Map.Entry<Article, Double>> distances = new ArrayList<>();
-
         for (Article trainingArticle : trainingArticles) {
             double distance = distanceFunction.apply(newArticle, trainingArticle);
             distances.add(new AbstractMap.SimpleEntry<>(trainingArticle, distance));
         }
-
         distances.sort(Comparator.comparingDouble(Map.Entry::getValue));
 
         Map<String, Integer> labelVotes = new HashMap<>();

@@ -21,11 +21,11 @@ class FeatureExtractorTest {
 
     @Test
     void countTotalLetters() {
-        document = new CoreDocument("to zdanie ma ponad trzydzieści liter");
+        document = new CoreDocument("to zdanie ma ponad trzydzieści liter.");
         this.pipeline.annotate(document);
         assertEquals(31, FeatureExtractor.countTotalLetters(document));
 
-        document = new CoreDocument("blep");
+        document = new CoreDocument("blep...");
         this.pipeline.annotate(document);
         assertEquals(4, FeatureExtractor.countTotalLetters(document));
     }

@@ -20,7 +20,11 @@ public class Serializer {
     public static void saveArticlesToFile(List<String> fileNames) {
         List<Article> articles = SGMParser.convert(fileNames);
 
+        int i = 0;
         for (Article article : articles) {
+            if (i++%100 == 0) {
+                System.out.println("Article: " + i);
+            }
             FeatureExtractor.extractFeatures(article);
         }
 

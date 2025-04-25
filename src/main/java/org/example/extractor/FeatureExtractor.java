@@ -75,7 +75,7 @@ public class FeatureExtractor {
 
     static {
         Properties props = new Properties();
-        props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner");
+        props.setProperty("annotators", "tokenize,pos,lemma,ner");
         pipeline = new StanfordCoreNLP(props);
 
         try {
@@ -151,7 +151,7 @@ public class FeatureExtractor {
             List<CoreLabel> wordsOnly = sentence.tokens().stream()
             .filter(token -> wordPattern.matcher(token.word()).matches())
             .toList();
-        totalWords += wordsOnly.size();
+            totalWords += wordsOnly.size();
         }
 
         return (double) totalWords / sentences.size();
@@ -301,23 +301,6 @@ public class FeatureExtractor {
         }
 
         return getMaxCount(countryCount);
-//        Map<String, Integer> countryCount = new LinkedHashMap<>();
-//
-//        for (String country: countryList) {
-//            if (document.text().toLowerCase().contains(country)) {
-//                countryCount.put(country, countryCount.getOrDefault(country, 0) + 1);
-//            }
-//        }
-
-//        for (CoreLabel token : document.tokens()) {
-//            String word = token.word().toLowerCase();
-//
-//            if (countryList.contains(word)) {
-//                countryCount.put(word, countryCount.getOrDefault(word, 0) + 1);
-//            }
-//        }
-
-//        return getMaxCount(countryCount);
     }
 
     private static String getMaxCount(Map<String, Integer> count) {
