@@ -50,40 +50,123 @@ public class Main {
         return articleLableMap;
     }
 
-    private static void printStatistics(List<Article> articles, BiFunction<Article, Article, Double> metricFunction, int neighboursNumber, double splitPercentage, Map<Article, String> articleLableMap) {
-        Set<String> labels = articles.stream().map(Article::getLabel).collect(Collectors.toSet());
+    private static void printStatistics(
+            List<Article> articles,
+            BiFunction<Article, Article, Double> metricFunction,
+            int neighboursNumber,
+            double splitPercentage,
+            Map<Article, String> articleLabelMap) {
 
-        assert metricFunction != null;
-        System.out.println("Wyniki dla k=" + neighboursNumber + ", podział na treningowy/uczący: " + (splitPercentage * 100) + "%/" + ((1 - splitPercentage) * 100) + "%, metryka='" + getMetricName(metricFunction) + "'");
-        System.out.println("Accuracy: \t " + Statistics.calculateAccuracy(articleLableMap));
+        Set<String> labels = articles.stream()
+                .map(Article::getLabel)
+                .collect(Collectors.toSet());
+
+        List<String> metricNames = List.of("Accuracy", "Recall", "Precision", "F1");
+
+        int maxLabelWidth = labels.stream()
+                .mapToInt(String::length)
+                .max()
+                .orElse(0);
+
+        int maxMetricNameWidth = metricNames.stream()
+                .mapToInt(String::length)
+                .max()
+                .orElse(0);
+
+        int valueWidth = 8;
+
+        System.out.println(
+                String.format("Wyniki dla k=%d, podział: %.1f%%/%.1f%%, metryka='%s'",
+                        neighboursNumber,
+                        splitPercentage * 100,
+                        (1 - splitPercentage) * 100,
+                        getMetricName(metricFunction))
+        );
+        System.out.println();
+
+        String accuracyLabel = "Accuracy";
+        double accuracy = Statistics.calculateAccuracy(articleLabelMap);
+        System.out.printf(
+                "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".6f%n",
+                "", accuracyLabel, accuracy
+        );
+        System.out.println();
 
         for (String label : labels) {
-            System.out.println(label + "\t Recall: \t " + Statistics.calculateRecall(articleLableMap, label));
-            System.out.println(label + "\t Precision: \t " + Statistics.calculatePrecision(articleLableMap, label));
+            double recall = Statistics.calculateRecall(articleLabelMap, label);
+            double precision = Statistics.calculatePrecision(articleLabelMap, label);
+            double f1 = 2 * recall * precision / (recall + precision);
+
+            System.out.printf(
+                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".6f%n",
+                    label, "Recall", recall
+            );
+            System.out.printf(
+                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".6f%n",
+                    label, "Precision", precision
+            );
+            System.out.printf(
+                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".6f%n",
+                    label, "F1", f1
+            );
+
+            System.out.println();
         }
 
-        System.out.println("Tablica pomyłek");
-
-        printConfusionMatrix(articleLableMap, labels);
+        System.out.println("Tablica pomyłek:");
+        printConfusionMatrix(articleLabelMap, labels);
     }
 
-    private static void printConfusionMatrix(Map<Article, String> articleLableMap, Set<String> labels) {
-        int[][] confusionMatrix = Statistics.calculateConfusionMatrix(articleLableMap, labels);
-        List<String> labelList = new ArrayList<>(labels);
-        System.out.print("\t");
-        for (int i = 0; i < labels.size(); i++) {
-            System.out.print("\t" + labelList.get(i));
+
+//    private static void printConfusionMatrix(Map<Article, String> articleLableMap, Set<String> labels) {
+//        int[][] confusionMatrix = Statistics.calculateConfusionMatrix(articleLableMap, labels);
+//        List<String> labelList = new ArrayList<>(Arrays.asList("us", "ca", "jp", "uk", "fr", "wg"));
+
+    /// /        System.out.println("\tus \tca \tjp \tuk \tfr \twg \t");
+//        for (int i = 0; i < labels.size(); i++) {
+//            System.out.print("\t" + labelList.get(i));
+//        }
+//        System.out.println();
+//        for (int i = 0; i < confusionMatrix.length; i++) {
+//            System.out.print(labelList.get(i) + "\t");
+//            for (int j = 0; j < confusionMatrix[i].length; j++) {
+//                System.out.print(confusionMatrix[i][j] + " " + "\t");
+//            }
+//            System.out.println(); // Nowa linia po każdym wierszu
+//        }
+//    }
+    private static void printConfusionMatrix(Map<Article, String> articleLabelMap, Set<String> labels) {
+        int[][] confusionMatrix = Statistics.calculateConfusionMatrix(articleLabelMap, labels);
+        List<String> labelList = List.of("us", "ca", "jp", "uk", "fr", "wg");
+
+        int maxLabelWidth = labelList.stream()
+                .mapToInt(String::length)
+                .max()
+                .orElse(0);
+
+        int maxNumberWidth = Arrays.stream(confusionMatrix)
+                .flatMapToInt(row -> Arrays.stream(row))
+                .map(n -> String.valueOf(n).length())
+                .max()
+                .orElse(0);
+
+        int cellWidth = Math.max(maxLabelWidth, maxNumberWidth) + 2;
+
+        System.out.printf("%" + cellWidth + "s", "");
+        for (String lbl : labelList) {
+            System.out.printf("%" + cellWidth + "s", lbl);
         }
         System.out.println();
-        System.out.println("\tusa \tcanada \tjapan \tuk \tfrance \twest-germany \t");
+
         for (int i = 0; i < confusionMatrix.length; i++) {
-            System.out.print(labelList.get(i) + "\t");
+            System.out.printf("%" + cellWidth + "s", labelList.get(i));
             for (int j = 0; j < confusionMatrix[i].length; j++) {
-                System.out.print(confusionMatrix[i][j] + " \t");
+                System.out.printf("%" + cellWidth + "d", confusionMatrix[i][j]);
             }
-            System.out.println(); // Nowa linia po każdym wierszu
+            System.out.println();
         }
     }
+
 
     private static void filterFeatures(List<Article> articles, List<String> selectedFeatureNames) {
         articles.forEach(art -> art.getFeatureMap()
@@ -99,14 +182,14 @@ public class Main {
     private static void extractFeaturesAndSaveToFile(int fileCount) {
         List<String> fileNames;
         try (Stream<Path> paths = Files.list(Path.of("data/"))) {
-           fileNames = paths
-                   .map(Path::toString)
-                   .filter(fileName -> fileName.startsWith("data\\reut2"))
-                   .toList()
-                   .subList(0, fileCount);
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
+            fileNames = paths
+                    .map(Path::toString)
+                    .filter(fileName -> fileName.startsWith("data\\reut2"))
+                    .toList()
+                    .subList(0, fileCount);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Serializer.saveArticlesToFile(fileNames);
     }
