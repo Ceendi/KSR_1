@@ -199,7 +199,7 @@ public class FeatureExtractor {
             }
         }
 
-        return (metricCount + imperialCount) == 0 ? 0.5 : imperialCount / (imperialCount + metricCount);
+        return (metricCount + imperialCount) == 0 ? 0.5 : (double) imperialCount / (imperialCount + metricCount);
     }
 
     private static class CurrencyMatch {
