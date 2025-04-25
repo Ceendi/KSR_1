@@ -145,8 +145,13 @@ public class FeatureExtractor {
 
         int totalWords = 0;
 
+        Pattern wordPattern = Pattern.compile("\\p{L}+");
+
         for (CoreSentence sentence : sentences) {
-            totalWords += sentence.tokens().size();
+            List<CoreLabel> wordsOnly = sentence.tokens().stream()
+            .filter(token -> wordPattern.matcher(token.word()).matches())
+            .toList();
+        totalWords += wordsOnly.size();
         }
 
         return (double) totalWords / sentences.size();
@@ -279,17 +284,40 @@ public class FeatureExtractor {
     }
 
     public static String findMostCommonCountry(CoreDocument document) {
+        String text = document.text();
         Map<String, Integer> countryCount = new LinkedHashMap<>();
 
-        for (CoreLabel token : document.tokens()) {
-            String word = token.word().toLowerCase();
+        for (String country : countryList) {
+            Pattern p = Pattern.compile("\\b" + Pattern.quote(country) + "\\b", Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(text);
 
-            if (countryList.contains(word)) {
-                countryCount.put(word, countryCount.getOrDefault(word, 0) + 1);
+            int count = 0;
+            while (m.find()) {
+                count++;
+            }
+            if (count > 0) {
+                countryCount.put(country, count);
             }
         }
 
         return getMaxCount(countryCount);
+//        Map<String, Integer> countryCount = new LinkedHashMap<>();
+//
+//        for (String country: countryList) {
+//            if (document.text().toLowerCase().contains(country)) {
+//                countryCount.put(country, countryCount.getOrDefault(country, 0) + 1);
+//            }
+//        }
+
+//        for (CoreLabel token : document.tokens()) {
+//            String word = token.word().toLowerCase();
+//
+//            if (countryList.contains(word)) {
+//                countryCount.put(word, countryCount.getOrDefault(word, 0) + 1);
+//            }
+//        }
+
+//        return getMaxCount(countryCount);
     }
 
     private static String getMaxCount(Map<String, Integer> count) {
@@ -358,7 +386,7 @@ public class FeatureExtractor {
                 wordCount++;
             }
         }
-        return 206.835 - 1.015 * ((double) wordCount/sentenceCount) - 84.6 * ((double) syllableCount/wordCount);
+        return 206.835 - 1.015 * ((double) wordCount / sentenceCount) - 84.6 * ((double) syllableCount / wordCount);
     }
 
 }
