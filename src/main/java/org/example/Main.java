@@ -22,8 +22,31 @@ public class Main {
 
         List<String> selectedFeatureNames = initDefaultFeatures();
 
+//        List<Integer> number = List.of(13);
+//        List<Double> numbers = List.of(0.5);
+//        for (int neighboursNumber : number) {
+//            for (double splitPercentage : numbers) {
+//                BiFunction<Article, Article, Double> metricFunction = Metrics.MANHATTAN;
+////            promptFeatureRemoval(selectedFeatureNames, scanner);
+//                // extractFeaturesAndSaveToFile(22); // only uncomment when you want to extract new features
+//                List<Article> articles = loadArticles();
+//
+//                filterFeatures(articles, selectedFeatureNames);
+//                Normalizator.normalizeArticles(articles);
+//
+//                List<Article> trainArticles = articles.subList(0, (int) (articles.size() * splitPercentage));
+//                List<Article> testArticles = articles.subList((int) (articles.size() * splitPercentage), articles.size());
+//
+//                Map<Article, String> articleLableMap = classify(neighboursNumber, trainArticles, testArticles, metricFunction);
+//
+//                printStatistics(articles, metricFunction, neighboursNumber, splitPercentage, articleLableMap);
+//            }
+//        }
+//        int neighboursNumber = 13;
         int neighboursNumber = promptNeighbours(scanner);
+//        double splitPercentage = 0.5;
         double splitPercentage = promptSplit(scanner);
+//        BiFunction<Article, Article, Double> metricFunction = Metrics.EUCLIDEAN;
         BiFunction<Article, Article, Double> metricFunction = promptMetric(scanner);
         promptFeatureRemoval(selectedFeatureNames, scanner);
         // extractFeaturesAndSaveToFile(22); // only uncomment when you want to extract new features
@@ -73,7 +96,7 @@ public class Main {
                 .max()
                 .orElse(0);
 
-        int valueWidth = 8;
+        int valueWidth = 5;
 
         System.out.println(
                 String.format("Wyniki dla k=%d, podział: %.1f%%/%.1f%%, metryka='%s'",
@@ -92,26 +115,54 @@ public class Main {
         );
         System.out.println();
 
+        double avg_precision = 0.;
+        double avg_recall = 0.;
+        double avg_f1 = 0.;
+        long count = 0;
+
         for (String label : labels) {
             double recall = Statistics.calculateRecall(articleLabelMap, label);
             double precision = Statistics.calculatePrecision(articleLabelMap, label);
             double f1 = 2 * recall * precision / (recall + precision);
+            long label_count = articles.stream()
+                    .filter(a -> label.equals(a.getLabel()))
+                    .count();
+            avg_precision += precision * label_count;
+            avg_recall += recall * label_count;
+            if (Double.isNaN(f1)) {
+                f1 = 0;
+            }
+            avg_f1 += f1 * label_count;
 
+            count += label_count;
             System.out.printf(
-                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".6f%n",
-                    label, "Recall", recall
+                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".2f%n",
+                    label, "Recall", recall * 100
             );
             System.out.printf(
-                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".6f%n",
-                    label, "Precision", precision
+                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".2f%n",
+                    label, "Precision", precision * 100
             );
             System.out.printf(
-                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".6f%n",
-                    label, "F1", f1
+                    "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".2f%n",
+                    label, "F1", f1 * 100
             );
 
             System.out.println();
         }
+
+        System.out.printf(
+                "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".2f%n",
+                "Average", "Recall", avg_precision * 100 / count
+        );
+        System.out.printf(
+                "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".2f%n",
+                "Average", "Precision", avg_recall * 100 / count
+        );
+        System.out.printf(
+                "%-" + maxLabelWidth + "s │ %-" + maxMetricNameWidth + "s = %" + valueWidth + ".2f%n",
+                "Average", "F1", avg_f1 * 100 / count
+        );
 
         System.out.println("Tablica pomyłek:");
         printConfusionMatrix(articleLabelMap, labels);
